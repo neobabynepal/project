@@ -1,0 +1,81 @@
+{
+  "kind": "singleType",
+  "collectionName": "homepage_contents",
+  "info": {
+    "singularName": "homepage-content",
+    "pluralName": "homepage-contents",
+    "displayName": "HomepageContent"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "heroTitle": {
+      "type": "string"
+    },
+    "heroSubtitle": {
+      "type": "text"
+    },
+    "heroVideo": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["videos"]
+    },
+    "heroImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "aboutBadge": {
+      "type": "string"
+    },
+    "aboutTitle": {
+      "type": "string"
+    },
+    "aboutContent": {
+      "type": "blocks"
+    },
+    "businessesBadge": {
+      "type": "string"
+    },
+    "businessesSectionTitle": {
+      "type": "string"
+    },
+    "businessesSectionSubtitle": {
+      "type": "text"
+    },
+    "brandsBadge": {
+      "type": "string"
+    },
+    "brandsSectionTitle": {
+      "type": "string"
+    },
+    "brandsSectionSubtitle": {
+      "type": "text"
+    },
+    "chairmanBadge": {
+      "type": "string"
+    },
+    "chairmanSectionTitle": {
+      "type": "string"
+    },
+    "careersBadge": {
+      "type": "string"
+    },
+    "careersTitle": {
+      "type": "string"
+    },
+    "careersDescription": {
+      "type": "text"
+    },
+    "contactCTATitle": {
+      "type": "string"
+    },
+    "contactCTADescription": {
+      "type": "text"
+    }
+  }
+}

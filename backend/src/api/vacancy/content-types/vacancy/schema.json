@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "vacancies",
+  "info": {
+    "singularName": "vacancy",
+    "pluralName": "vacancies",
+    "displayName": "Vacancy"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Title": {
+      "type": "string"
+    },
+    "Department": {
+      "type": "string"
+    },
+    "Description": {
+      "type": "blocks"
+    },
+    "applyLink": {
+      "type": "string"
+    }
+  }
+}

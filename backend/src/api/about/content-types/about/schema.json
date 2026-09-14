@@ -1,0 +1,27 @@
+{
+  "kind": "singleType",
+  "collectionName": "abouts",
+  "info": {
+    "singularName": "about",
+    "pluralName": "abouts",
+    "displayName": "About"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "whoWeAreTitle": {
+      "type": "string"
+    },
+    "whoWeAreContent": {
+      "type": "blocks"
+    },
+    "ourStoryTitle": {
+      "type": "string"
+    },
+    "ourStoryContent": {
+      "type": "blocks"
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "kind": "singleType",
+  "collectionName": "chairman_messages",
+  "info": {
+    "singularName": "chairman-message",
+    "pluralName": "chairman-messages",
+    "displayName": "ChairmanMessage"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "designation": {
+      "type": "string"
+    },
+    "photo": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images", "files", "videos", "audios"]
+    },
+    "shortMessage": {
+      "type": "text"
+    },
+    "fullMessage": {
+      "type": "blocks"
+    }
+  }
+}
