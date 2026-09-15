@@ -33,7 +33,7 @@ const config = ({ env }: Core.Config.Shared.ConfigParams): Core.Config.Database 
     },
     postgres: {
       client: 'postgres',
-      connection: env('DATABASE_URL') ? {
+      connection: (env('DATABASE_URL') ? {
         connectionString: env('DATABASE_URL'),
         ssl: env.bool('DATABASE_SSL', false) && {
           key: env('DATABASE_SSL_KEY', undefined),
