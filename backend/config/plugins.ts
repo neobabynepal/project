@@ -34,6 +34,17 @@ const config = ({ env }: Core.Config.Shared.ConfigParams): Core.Config.Plugin =>
   },
   upload: {
     config: {
+      provider: env('CLOUDINARY_NAME') ? 'cloudinary' : 'local',
+      providerOptions: env('CLOUDINARY_NAME') ? {
+        cloud_name: env('CLOUDINARY_NAME'),
+        api_key: env('CLOUDINARY_KEY'),
+        api_secret: env('CLOUDINARY_SECRET'),
+      } : undefined,
+      actionOptions: {
+        upload: {},
+        uploadStream: {},
+        delete: {},
+      },
       security: {
         allowedTypes: allowedMediaTypes,
         deniedTypes,
