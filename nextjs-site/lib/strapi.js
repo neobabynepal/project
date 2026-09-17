@@ -21,14 +21,36 @@ import {
   FALLBACK_HOMEPAGE
 } from './fallbackData';
 
-const STRAPI_BASE = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
+const FALLBACK_STRAPI_LOCAL = 'http://localhost:1337';
+
+/**
+ * Helper to get normalized Strapi base URL without trailing slash
+ */
+export function getStrapiBaseUrl() {
+  const envUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
+  if (envUrl && envUrl.trim()) {
+    return envUrl.trim().replace(/\/$/, '');
+  }
+  return FALLBACK_STRAPI_LOCAL;
+}
+
+/**
+ * Helper to resolve absolute Strapi endpoints or media paths
+ */
+export function getStrapiURL(path = '') {
+  const baseUrl = getStrapiBaseUrl();
+  const cleanPath = path ? (path.startsWith('/') ? path : `/${path}`) : '';
+  return `${baseUrl}${cleanPath}`;
+}
 
 /**
  * Base fetch helper
  */
 async function fetchStrapi(endpoint, params = {}) {
   try {
-    const url = new URL(`/api/${endpoint}`, STRAPI_BASE);
+    const cleanEndpoint = endpoint.startsWith('/') ? endpoint.slice(1) : endpoint;
+    const baseUrl = getStrapiBaseUrl();
+    const url = new URL(`/api/${cleanEndpoint}`, baseUrl);
     Object.entries(params).forEach(([key, val]) => {
       if (val !== undefined && val !== null) {
         url.searchParams.append(key, val);
@@ -357,21 +379,67 @@ export async function getHomepageContent() {
 
 // ---------------------- 11. CONTACT SUBMISSION ----------------------
 export async function submitContactSubmission(formData) {
+  // 1. Honeypot spam trap check: if bot filled hidden field, return silent success
+  if (formData && formData.website_hp) {
+    return { success: true };
+  }
+
+  const { website_hp, ...cleanData } = formData || {};
+
+  // 2. Server-side validation
+  const fullName = (cleanData.fullName || '').trim();
+  const email = (cleanData.email || '').trim();
+  const message = (cleanData.message || '').trim();
+  const phone = (cleanData.phone || '').trim();
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const phoneRegex = /^[+]*[(]?[0-9]{1,4}[)]?[-\s./0-9]*$/;
+
+  if (!fullName || fullName.length < 2) {
+    return {
+      success: false,
+      error: 'Please provide your full name (minimum 2 characters).'
+    };
+  }
+
+  if (!email || !emailRegex.test(email)) {
+    return {
+      success: false,
+      error: 'Please enter a valid email address (e.g. name@organization.com).'
+    };
+  }
+
+  if (phone && (phone.length < 7 || !phoneRegex.test(phone))) {
+    return {
+      success: false,
+      error: 'Please enter a valid phone number.'
+    };
+  }
+
+  if (!message || message.length < 10) {
+    return {
+      success: false,
+      error: 'Please provide a detailed inquiry message (minimum 10 characters).'
+    };
+  }
+
   try {
-    const res = await fetch(`${STRAPI_BASE}/api/contact-submissions`, {
+    const endpointUrl = getStrapiURL('/api/contact-submissions');
+    const res = await fetch(endpointUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ data: formData }),
+      body: JSON.stringify({ data: cleanData }),
     });
 
     if (!res.ok) {
       const errorJson = await res.json().catch(() => null);
-      console.error('Strapi contact submission error:', res.status, errorJson);
+      // Technical details kept strictly for server / developer console logs
+      console.error('Strapi contact submission error details:', res.status, errorJson);
       return {
         success: false,
-        error: errorJson?.error?.message || `Server error (${res.status}). Please try again.`
+        error: 'We were unable to process your inquiry right now. Please verify your details or reach out directly to info@adhikarigroup.com.'
       };
     }
 
@@ -381,10 +449,11 @@ export async function submitContactSubmission(formData) {
       data: data?.data
     };
   } catch (err) {
-    console.error('Network error during contact submission:', err);
+    // Technical network exception logged for developers
+    console.error('Network exception during contact submission:', err);
     return {
       success: false,
-      error: 'Unable to connect to the server. Please verify your connection and try again.'
+      error: 'Unable to connect to the server right now. Please check your internet connection and try again.'
     };
   }
 }

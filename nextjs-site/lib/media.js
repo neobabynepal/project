@@ -1,3 +1,5 @@
+import { getStrapiURL } from './strapi';
+
 /**
  * Strapi Media URL Resolver
  * Resolves media object, nested format, or fallback media path safely for both images and videos.
@@ -11,8 +13,7 @@ export function getStrapiMediaUrl(media, format = 'large') {
     if (media.startsWith('http://') || media.startsWith('https://') || media.startsWith('/images/')) {
       return media;
     }
-    const strapiBase = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
-    return `${strapiBase}${media.startsWith('/') ? '' : '/'}${media}`;
+    return getStrapiURL(media);
   }
 
   // If media is a Strapi 5 or Strapi 4 object
@@ -47,8 +48,7 @@ export function getStrapiMediaUrl(media, format = 'large') {
     return url;
   }
 
-  const strapiBase = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
-  return `${strapiBase}${url.startsWith('/') ? '' : '/'}${url}`;
+  return getStrapiURL(url);
 }
 
 export function getPlaceholderImage(category = 'corporate') {

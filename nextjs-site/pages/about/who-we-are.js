@@ -32,7 +32,7 @@ export default function WhoWeArePage({ about, leaders, chairman, settings }) {
       {/* Main Who We Are Section */}
       <section className="section">
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.2fr) minmax(0, 1fr)', gap: '4rem', alignItems: 'center' }}>
+          <div className="who-we-are-grid">
             <div>
               <div className="section-badge">Corporate Profile</div>
               <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '2.2rem', fontWeight: 700, color: 'var(--color-heading)', marginBottom: '1.5rem', lineHeight: 1.25 }}>
@@ -51,11 +51,11 @@ export default function WhoWeArePage({ about, leaders, chairman, settings }) {
             </div>
 
             <div style={{ position: 'relative' }}>
-              <div style={{ borderRadius: 'var(--radius-lg)', overflow: 'hidden', boxShadow: 'var(--shadow-lg)', border: '1px solid var(--color-border)' }}>
+              <div style={{ borderRadius: 'var(--radius-lg)', overflow: 'hidden', boxShadow: 'var(--shadow-lg)', border: '1px solid var(--color-border)', maxHeight: '420px' }}>
                 <img
                   src="/images/about-corporate.jpg"
                   alt="Adhikari Group Corporate Headquarters"
-                  style={{ width: '100%', height: 'auto', display: 'block' }}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                 />
               </div>
             </div>
@@ -68,7 +68,7 @@ export default function WhoWeArePage({ about, leaders, chairman, settings }) {
         <section className="section section-primary-tint">
           <div className="container">
             <div style={{ background: 'var(--color-bg-white)', borderRadius: 'var(--radius-lg)', padding: '3.5rem', boxShadow: 'var(--shadow-md)', border: '1px solid var(--color-border)' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '260px minmax(0, 1fr)', gap: '3rem', alignItems: 'center' }}>
+              <div className="chairman-grid">
                 <div style={{ textAlign: 'center' }}>
                   <div style={{ width: '200px', height: '200px', borderRadius: 'var(--radius-full)', overflow: 'hidden', margin: '0 auto 1.25rem auto', border: '4px solid var(--color-primary-tint)', boxShadow: 'var(--shadow-sm)' }}>
                     <img

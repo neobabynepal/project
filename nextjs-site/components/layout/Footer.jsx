@@ -67,7 +67,7 @@ export default function Footer({ settings }) {
 
           {/* Col 2: Navigation */}
           <div>
-            <h4 className="footer-heading">Corporate</h4>
+            <h3 className="footer-heading">Corporate</h3>
             <ul className="footer-links">
               <li><Link href="/">Home</Link></li>
               <li><Link href="/about/who-we-are">Who We Are</Link></li>
@@ -79,7 +79,7 @@ export default function Footer({ settings }) {
 
           {/* Col 3: Media & Careers */}
           <div>
-            <h4 className="footer-heading">Media & Careers</h4>
+            <h3 className="footer-heading">Media & Careers</h3>
             <ul className="footer-links">
               <li><Link href="/media/news-events">News & Events</Link></li>
               <li><Link href="/media/gallery">Photo Gallery</Link></li>
@@ -92,7 +92,7 @@ export default function Footer({ settings }) {
           {/* Col 4: Contact Details */}
           {hasContactItems && (
             <div>
-              <h4 className="footer-heading">Contact HQ</h4>
+              <h3 className="footer-heading">Contact HQ</h3>
               {address && (
                 <div className="footer-contact-item">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

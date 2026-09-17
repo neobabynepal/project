@@ -7,12 +7,13 @@ import EmptyState from '@/components/ui/EmptyState';
 
 export default function NewsEventsPage({ posts, settings }) {
   const [filter, setFilter] = useState('all');
+  const safePosts = posts || [];
 
-  const categories = ['all', ...new Set(posts.map(p => p.category).filter(Boolean))];
+  const categories = ['all', ...new Set(safePosts.map(p => p.category).filter(Boolean))];
 
   const filteredPosts = filter === 'all'
-    ? posts
-    : posts.filter(p => p.category === filter);
+    ? safePosts
+    : safePosts.filter(p => p.category === filter);
 
   return (
     <>
@@ -35,7 +36,7 @@ export default function NewsEventsPage({ posts, settings }) {
 
       <section className="section">
         <div className="container">
-          {posts.length === 0 ? (
+          {safePosts.length === 0 ? (
             <EmptyState
               title="News and Events Coming Soon"
               message="We have no announcements to display right now. Please check back shortly for updates."

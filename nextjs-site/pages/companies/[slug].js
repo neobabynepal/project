@@ -11,6 +11,8 @@ export default function CompanyDetailPage({ company }) {
 
   const imageUrl = getStrapiMediaUrl(company.coverImage || company.logo) || getPlaceholderImage('company');
 
+  const isLogoImage = Boolean(!company.coverImage && company.logo);
+
   return (
     <>
       <Head>
@@ -36,14 +38,14 @@ export default function CompanyDetailPage({ company }) {
 
       <section className="section">
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 2fr) minmax(0, 1.2fr)', gap: '3.5rem', alignItems: 'start' }}>
+          <div className="detail-layout-grid">
             {/* Main Details */}
             <div>
-              <div style={{ borderRadius: 'var(--radius-lg)', overflow: 'hidden', marginBottom: '2.5rem', boxShadow: 'var(--shadow-md)', maxHeight: '420px' }}>
+              <div className={isLogoImage ? "detail-logo-box" : "detail-cover-box"}>
                 <img
                   src={imageUrl}
                   alt={company.name}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  style={{ objectFit: isLogoImage ? 'contain' : 'cover' }}
                   onError={(e) => {
                     e.target.onerror = null;
                     e.target.src = getPlaceholderImage('company');

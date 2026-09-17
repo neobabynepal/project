@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 export default function MobileMenu({ isOpen, onClose, settings }) {
   const router = useRouter();
   const [openSection, setOpenSection] = useState(null);
+  const drawerRef = useRef(null);
+  const closeButtonRef = useRef(null);
+  const previousFocusRef = useRef(null);
 
   const toggleSection = (section) => {
     setOpenSection(openSection === section ? null : section);
@@ -14,6 +17,62 @@ export default function MobileMenu({ isOpen, onClose, settings }) {
     onClose();
     setOpenSection(null);
   };
+
+  // Body scroll lock, focus trap, & Escape key listener
+  useEffect(() => {
+    if (!isOpen) {
+      document.body.style.overflow = '';
+      if (previousFocusRef.current && typeof previousFocusRef.current.focus === 'function') {
+        previousFocusRef.current.focus();
+      }
+      return;
+    }
+
+    // Save active element before menu opened
+    previousFocusRef.current = document.activeElement;
+    document.body.style.overflow = 'hidden';
+
+    // Focus close button on open
+    setTimeout(() => {
+      closeButtonRef.current?.focus();
+    }, 100);
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        onClose();
+        return;
+      }
+
+      if (e.key === 'Tab' && drawerRef.current) {
+        const focusableElements = drawerRef.current.querySelectorAll(
+          'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusableElements.length === 0) return;
+
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        if (e.shiftKey) {
+          if (document.activeElement === firstElement) {
+            e.preventDefault();
+            lastElement.focus();
+          }
+        } else {
+          if (document.activeElement === lastElement) {
+            e.preventDefault();
+            firstElement.focus();
+          }
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.body.style.overflow = '';
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, onClose]);
 
   const navTree = [
     { label: 'Home', href: '/' },
@@ -47,25 +106,55 @@ export default function MobileMenu({ isOpen, onClose, settings }) {
   ];
 
   return (
-    <div className={`mobile-menu-overlay ${isOpen ? 'open' : ''}`} onClick={onClose}>
-      <div className="mobile-menu-drawer" onClick={(e) => e.stopPropagation()}>
+    <div
+      className={`mobile-menu-overlay ${isOpen ? 'open' : ''}`}
+      onClick={onClose}
+      aria-hidden={!isOpen}
+    >
+      <div
+        id="mobile-navigation-drawer"
+        ref={drawerRef}
+        className="mobile-menu-drawer"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Mobile Navigation Menu"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="mobile-menu-header">
           <Link href="/" className="brand-logo" onClick={handleLinkClick}>
             <img src="/images/logo.png" alt="Adhikari Group" style={{ height: '40px', width: 'auto' }} />
           </Link>
-          <button type="button" onClick={onClose} aria-label="Close menu" style={{ color: 'var(--color-primary)', padding: '0.5rem' }}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <button
+            ref={closeButtonRef}
+            type="button"
+            onClick={onClose}
+            aria-label="Close menu"
+            style={{ color: 'var(--color-primary)', padding: '0.5rem', background: 'transparent', border: 'none', cursor: 'pointer' }}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
               <line x1="18" y1="6" x2="6" y2="18" />
               <line x1="6" y1="6" x2="18" y2="18" />
             </svg>
           </button>
         </div>
 
-        <div className="mobile-menu-body">
+        <nav className="mobile-menu-body" aria-label="Mobile Primary Navigation">
           {navTree.map((item) => {
             if (item.children) {
               const isChildActive = item.children.some(c => router.asPath === c.href || router.pathname === c.href);
               const isSectionOpen = openSection === item.id || isChildActive;
+              const subMenuId = `mobile-sub-menu-${item.id}`;
 
               return (
                 <div key={item.id} className="mobile-nav-group">
@@ -73,6 +162,8 @@ export default function MobileMenu({ isOpen, onClose, settings }) {
                     type="button"
                     className={`mobile-nav-link ${isChildActive ? 'active' : ''}`}
                     onClick={() => toggleSection(item.id)}
+                    aria-expanded={isSectionOpen}
+                    aria-controls={subMenuId}
                     style={{ width: '100%' }}
                   >
                     <span>{item.label}</span>
@@ -86,6 +177,7 @@ export default function MobileMenu({ isOpen, onClose, settings }) {
                       strokeWidth="2.5"
                       strokeLinecap="round"
                       strokeLinejoin="round"
+                      aria-hidden="true"
                       style={{
                         transform: isSectionOpen ? 'rotate(180deg)' : 'rotate(0deg)',
                         transition: 'transform 0.2s ease'
@@ -95,7 +187,7 @@ export default function MobileMenu({ isOpen, onClose, settings }) {
                     </svg>
                   </button>
                   {isSectionOpen && (
-                    <div className="mobile-dropdown-content">
+                    <div id={subMenuId} className="mobile-dropdown-content" role="region" aria-label={`${item.label} sub-links`}>
                       {item.children.map(child => (
                         <Link
                           key={child.href}
@@ -130,7 +222,7 @@ export default function MobileMenu({ isOpen, onClose, settings }) {
               Get In Touch
             </Link>
           </div>
-        </div>
+        </nav>
       </div>
     </div>
   );

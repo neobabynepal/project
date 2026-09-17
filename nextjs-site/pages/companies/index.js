@@ -8,12 +8,13 @@ import EmptyState from '@/components/ui/EmptyState';
 
 export default function CompaniesPage({ companies, settings }) {
   const [filter, setFilter] = useState('all');
+  const safeCompanies = companies || [];
 
-  const categories = ['all', ...new Set(companies.map(c => c.category).filter(Boolean))];
+  const categories = ['all', ...new Set(safeCompanies.map(c => c.category).filter(Boolean))];
 
   const filteredCompanies = filter === 'all'
-    ? companies
-    : companies.filter(c => c.category === filter);
+    ? safeCompanies
+    : safeCompanies.filter(c => c.category === filter);
 
   return (
     <>
@@ -36,7 +37,7 @@ export default function CompaniesPage({ companies, settings }) {
 
       <section className="section">
         <div className="container">
-          {companies.length === 0 ? (
+          {safeCompanies.length === 0 ? (
             <EmptyState
               title="Companies Coming Soon"
               message="We are currently updating our corporate directory. Please check back shortly."

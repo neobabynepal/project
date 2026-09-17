@@ -6,7 +6,8 @@ import Breadcrumb from '@/components/ui/Breadcrumb';
 import EmptyState from '@/components/ui/EmptyState';
 
 export default function VacanciesPage({ vacancies, settings }) {
-  const activeVacancies = vacancies.filter(v => v.isActive !== false);
+  const safeVacancies = vacancies || [];
+  const activeVacancies = safeVacancies.filter(v => v.isActive !== false);
 
   return (
     <>

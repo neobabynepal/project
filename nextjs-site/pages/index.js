@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import {
@@ -11,6 +11,7 @@ import { getStrapiMediaUrl } from '@/lib/media';
 import SectionHeader from '@/components/ui/SectionHeader';
 import BrandCard from '@/components/cards/BrandCard';
 import RichText from '@/components/ui/RichText';
+import Seo from '@/components/ui/Seo';
 
 export default function HomePage({
   homepage,
@@ -18,6 +19,8 @@ export default function HomePage({
   brands,
   settings
 }) {
+  const videoRef = useRef(null);
+
   const heroImage = getStrapiMediaUrl(homepage?.heroImage) || '/images/about-corporate.jpg';
   const heroVideo = getStrapiMediaUrl(homepage?.heroVideo) || '/images/mumbuds-production.mp4';
   const featuredBrands = (brands || []).slice(0, 4);
@@ -29,21 +32,25 @@ export default function HomePage({
     { number: "50+", label: "Dealer Network" }
   ];
 
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.muted = true;
+      const playPromise = videoRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((err) => {
+          console.warn('Autoplay deferred or video playback handled:', err);
+        });
+      }
+    }
+  }, [heroVideo]);
+
   return (
     <>
-      <Head>
-        <title>Adhikari Group | Diversified Business Group in Nepal</title>
-        <meta
-          name="description"
-          content="Adhikari Group is a diversified Nepal-based business group operating across import, distribution, retail, B2B commerce, baby care, hygiene products and consumer brands."
-        />
-        <meta property="og:title" content="Adhikari Group | Diversified Business Group in Nepal" />
-        <meta
-          property="og:description"
-          content="Parent corporate group managing import, distribution, retail chains, B2B commerce, hygiene products, baby care and consumer brands."
-        />
-        <meta property="og:image" content={heroImage} />
-      </Head>
+      <Seo
+        title="Adhikari Group | Diversified Business Group in Nepal"
+        description="Adhikari Group is a diversified Nepal-based business group operating across import, distribution, retail, B2B commerce, baby care, hygiene products and consumer brands."
+        image={heroImage}
+      />
 
       {/* 1. HERO SECTION WITH RESPONSIVE BACKGROUND VIDEO */}
       <section
@@ -55,13 +62,19 @@ export default function HomePage({
         {/* Background video on desktop */}
         {heroVideo && (
           <video
+            ref={videoRef}
             className="hero-video-bg"
+            src={heroVideo}
             autoPlay
             muted
             loop
             playsInline
             poster={heroImage}
             aria-hidden="true"
+            onError={(e) => {
+              console.warn('Video failed to load, keeping static poster background:', e);
+              e.target.style.display = 'none';
+            }}
           >
             <source src={heroVideo} type="video/mp4" />
           </video>
@@ -110,12 +123,7 @@ export default function HomePage({
       {/* 2. WHO WE ARE TEASER */}
       <section className="section">
         <div className="container">
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'minmax(0, 1.1fr) minmax(0, 1fr)',
-            gap: '4rem',
-            alignItems: 'center'
-          }}>
+          <div className="teaser-grid">
             <div>
               <div className="section-badge">
                 {homepage?.aboutBadge || "Corporate Profile"}
@@ -151,12 +159,13 @@ export default function HomePage({
               borderRadius: 'var(--radius-lg)',
               overflow: 'hidden',
               boxShadow: 'var(--shadow-md)',
-              border: '1px solid var(--color-border)'
+              border: '1px solid var(--color-border)',
+              maxHeight: '380px'
             }}>
               <img
                 src="/images/companies/neobuds.jpeg"
                 alt="NeoBuds Retail Operations"
-                style={{ width: '100%', height: '360px', objectFit: 'cover' }}
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
             </div>
           </div>

@@ -6,6 +6,8 @@ import Breadcrumb from '@/components/ui/Breadcrumb';
 import EmptyState from '@/components/ui/EmptyState';
 
 export default function PoliciesPage({ policies, settings }) {
+  const safePolicies = policies || [];
+
   return (
     <>
       <Head>
@@ -27,7 +29,7 @@ export default function PoliciesPage({ policies, settings }) {
 
       <section className="section">
         <div className="container">
-          {policies.length === 0 ? (
+          {safePolicies.length === 0 ? (
             <EmptyState
               title="Policies Coming Soon"
               message="Our corporate policy documents are currently being compiled. Please check back shortly."

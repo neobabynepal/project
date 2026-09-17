@@ -1,16 +1,16 @@
 import React from 'react';
-import Head from 'next/head';
 import Link from 'next/link';
 import { getSiteSettings } from '@/lib/strapi';
 import Breadcrumb from '@/components/ui/Breadcrumb';
+import Seo from '@/components/ui/Seo';
 
 export default function Custom404({ settings }) {
   return (
     <>
-      <Head>
-        <title>Page Not Found (404) | Adhikari Group</title>
-        <meta name="description" content="The requested corporate page could not be found." />
-      </Head>
+      <Seo
+        title="Page Not Found (404)"
+        description="The requested corporate page could not be found."
+      />
 
       <section className="page-hero">
         <div className="container">
@@ -63,7 +63,7 @@ export default function Custom404({ settings }) {
               <Link href="/companies" className="btn btn-outline">
                 Our Companies
               </Link>
-              <Link href="/contact" className="btn btn-outline-orange">
+              <Link href="/contact" className="btn btn-outline">
                 Contact Support
               </Link>
             </div>

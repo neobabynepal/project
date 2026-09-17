@@ -6,6 +6,8 @@ import Breadcrumb from '@/components/ui/Breadcrumb';
 import EmptyState from '@/components/ui/EmptyState';
 
 export default function BrandsPage({ brands, settings }) {
+  const safeBrands = brands || [];
+
   return (
     <>
       <Head>
@@ -27,7 +29,7 @@ export default function BrandsPage({ brands, settings }) {
 
       <section className="section">
         <div className="container">
-          {brands.length === 0 ? (
+          {safeBrands.length === 0 ? (
             <EmptyState
               title="Brands Coming Soon"
               message="Our brand directory is currently being updated. Please check back shortly."

@@ -317,6 +317,17 @@ video {
   padding-left: 1.1rem;
 }
 
+.nav-link:focus-visible,
+.dropdown-trigger:focus-visible,
+.dropdown-item:focus-visible,
+.hamburger-btn:focus-visible,
+.mobile-nav-link:focus-visible,
+.mobile-dropdown-item:focus-visible {
+  outline: 2px solid var(--color-orange);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
 .hamburger-btn {
   display: none;
   background: none;
@@ -653,7 +664,8 @@ video {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1.75rem;
+  padding: 1.25rem;
+  height: 160px;
   background-color: var(--color-bg-white);
 }
 
@@ -678,13 +690,82 @@ video {
 }
 
 .company-card-img-wrapper.company-card-logo-container .company-card-logo {
-  max-height: 130px;
+  max-height: 110px;
   max-width: 85%;
   transition: transform var(--transition-slow);
 }
 
 .card:hover .company-card-img-wrapper.company-card-logo-container .company-card-logo {
   transform: scale(1.04);
+}
+
+/* Teaser & Page Hero Detail Grids */
+.teaser-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 4rem;
+  align-items: center;
+}
+
+.who-we-are-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 4rem;
+  align-items: center;
+}
+
+.chairman-grid {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  gap: 3rem;
+  align-items: center;
+}
+
+.detail-layout-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1.2fr);
+  gap: 3.5rem;
+  align-items: start;
+}
+
+.detail-cover-box {
+  width: 100%;
+  height: 380px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: 2.5rem;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface-subtle);
+}
+
+.detail-cover-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.detail-logo-box {
+  width: 100%;
+  height: 200px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: 2.5rem;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-bg-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.detail-logo-box img {
+  max-width: 85%;
+  max-height: 140px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
 }
 
 .company-card-logo-badge {
@@ -1111,35 +1192,115 @@ video {
 /* ==========================================================================
    FORMS
    ========================================================================== */
+/* ==========================================================================
+   FORMS & CONTACT PORTAL
+   ========================================================================== */
+.contact-page-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: 3.5rem;
+  align-items: start;
+}
+
+.contact-card-box {
+  background: var(--color-bg-white);
+  padding: 2.75rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-md);
+  position: relative;
+}
+
+.form-row-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
 .form-group {
   margin-bottom: 1.35rem;
+  position: relative;
 }
 
 .form-label {
-  display: block;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   color: var(--color-primary);
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.45rem;
+}
+
+.form-label-required {
+  color: var(--color-orange);
+  margin-left: 2px;
 }
 
 .form-control {
   width: 100%;
-  padding: 0.8rem 1rem;
+  padding: 0.85rem 1.1rem;
   font-family: inherit;
   font-size: 0.95rem;
   color: var(--color-text-main);
-  background-color: var(--color-bg-white);
+  background-color: #FFFFFF;
   border: 1.5px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.02);
+}
+
+.form-control:hover:not(:disabled) {
+  border-color: rgba(34, 80, 113, 0.35);
 }
 
 .form-control:focus {
   outline: none;
   border-color: var(--color-orange);
-  box-shadow: 0 0 0 3px var(--color-orange-subtle);
+  box-shadow: 0 0 0 4px var(--color-orange-subtle);
+  background-color: #FFFFFF;
+}
+
+.form-control:disabled {
+  background-color: var(--color-surface-subtle);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.form-control-error {
+  border-color: #EF4444 !important;
+  background-color: rgba(239, 68, 68, 0.03) !important;
+}
+
+.form-control-error:focus {
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15) !important;
+}
+
+.form-error-text {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  color: #DC2626;
+  font-weight: 500;
+  margin-top: 0.35rem;
+}
+
+.contact-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-orange);
+  background: var(--color-orange-subtle);
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-full);
+  margin-bottom: 1rem;
 }
 
 /* Empty States */
@@ -1201,7 +1362,7 @@ video {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
+  object-position: center 30%;
   z-index: 1;
   opacity: 1;
   pointer-events: none;
@@ -1276,6 +1437,46 @@ video {
 }
 
 /* ==========================================================================
+   STORY, VISION & MISSION COMPONENTS
+   ========================================================================== */
+.story-content-box {
+  background: var(--color-bg-white);
+  padding: 3.5rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 4rem;
+}
+
+.vision-mission-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+
+.vision-card {
+  background: linear-gradient(135deg, #225071 0%, #193C55 100%);
+  color: #FFFFFF;
+  padding: 2.5rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.mission-card {
+  background: var(--color-primary-tint);
+  padding: 2.5rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-primary);
+}
+
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: 1.5rem;
+}
+
+/* ==========================================================================
    RESPONSIVE MEDIA QUERIES
    ========================================================================== */
 @media (max-width: 1024px) {
@@ -1286,19 +1487,18 @@ video {
 }
 
 @media (max-width: 768px) {
-  .hero-video-bg {
-    display: none !important; /* Hide heavy video on mobile, static image background is active */
-  }
-
   .hero-video-section {
-    height: 100vh;
-    height: 100svh;
-    min-height: 100vh;
-    min-height: 100svh;
-    padding: 3rem 0;
+    height: auto;
+    min-height: max(480px, 72svh);
+    padding: 4.5rem 0 3.5rem 0;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+  }
+
+  .hero-video-bg {
+    object-fit: cover;
+    object-position: center 30%;
   }
 
   .utility-bar {
@@ -1341,6 +1541,56 @@ video {
   .footer-grid {
     grid-template-columns: 1fr;
     gap: 2rem;
+  }
+
+  .story-content-box {
+    padding: 1.75rem 1.25rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .vision-mission-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .vision-card,
+  .mission-card {
+    padding: 1.75rem 1.25rem;
+  }
+
+  .values-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .contact-page-grid,
+  .teaser-grid,
+  .who-we-are-grid,
+  .chairman-grid,
+  .detail-layout-grid {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+
+  .contact-card-box {
+    padding: 1.75rem 1.25rem;
+  }
+
+  .form-row-2col {
+    grid-template-columns: 1fr !important;
+    gap: 0 !important;
+  }
+
+  .detail-cover-box {
+    height: 240px;
+    margin-bottom: 1.75rem;
+  }
+
+  .detail-logo-box {
+    height: 160px;
+    margin-bottom: 1.75rem;
+    padding: 1.25rem;
   }
 }
 
